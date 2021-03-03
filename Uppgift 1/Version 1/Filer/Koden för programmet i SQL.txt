@@ -1,0 +1,586 @@
+/*Ny-skapar och använder databasen*/
+drop database if exists skobutik;
+
+create database skobutik;
+
+use skobutik;
+
+
+
+/*Start: skapar alla tabeller och deras grundvärden*/
+	/*Skapar tabellen skor*/	
+	create table skor
+	(Id int not null auto_increment,
+	färg varchar(10) not null,
+	storlek int not null,
+	pris double not null,
+	märke varchar(30) not null,
+	sålda int,
+	primary key(Id));
+
+		/*Fyller i startvärden för tabellen skor*/
+		/*Id 1*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('svart' , 38 , 599.99 , 'Ecco');
+			
+		/*Id 2*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('blå' , 42 , 785 , 'Adidas');
+		
+		/*Id 3*/	
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('svart' , 44 , 949 , 'Försvarsmakten');
+			
+		/*Id 4*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('röd' , 43 , 1599.49 , 'Kinky Boots');
+			
+		/*Id 5*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('vit' , 40 , 1289 , 'Adidas');
+			
+		/*Id 6*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('brun' , 46 , 460 , 'Ecco');
+			
+		/*Id 7*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('röd' , 29 , 633.459242 , 'Chimex');
+			
+		/*Id 8*/
+		INSERT INTO skor(färg, storlek, pris, märke)
+			VALUES ('orange' , 58 , 472.3875613 , 'Chimex');
+
+
+
+
+	/*Skapar tabellen kategorier*/
+	create table kategorier
+	(Id int not null auto_increment,
+	kategori varchar(30) not null,
+	produkter int,
+	primary key(Id));
+
+		/*Fyller i startvärden för tabellen kategorier*/
+		/*Id 1*/
+		INSERT INTO kategorier(kategori)
+		VALUES ('Utomhus');
+			
+		/*Id 2*/
+		INSERT INTO kategorier(kategori)
+		VALUES ('Inomhus');
+			
+		/*Id 3*/
+		INSERT INTO kategorier(kategori)
+		VALUES ('Sandaler');
+			
+		/*Id 4*/
+		INSERT INTO kategorier(kategori)
+		VALUES ('Träning');
+			
+		/*Id 5*/
+		INSERT INTO kategorier(kategori)
+		VALUES ('Kängor');
+
+
+
+	/*Skapar tabellen kategorierAllaSkor*/
+	create table kategorierAllaSkor
+	(Id int not null auto_increment,
+	sko_Id int,
+	kategori_Id int,
+	primary key(Id),
+	foreign key (sko_Id) references skor(Id),
+	foreign key (kategori_Id) references kategorier(Id));
+
+		/*Fyller i startvärden för tabellen kategorierAllaSkor*/
+		/*Id 1*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (1 , 1);
+
+		/*Id 2*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (1 , 3);
+
+		/*Id 3*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (2 , 2);
+
+		/*Id 4*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (2 , 4);
+			
+		/*Id 5*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (3 , 5);
+
+		/*Id 6*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (4 , 2);
+			
+		/*Id 7*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (4 , 5);
+			
+		/*Id 8*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (5 , 1);
+			
+		/*Id 9*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (5 , 2);
+			
+		/*Id 10*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (5 , 4);
+
+		/*Id 11*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (6 , 3);
+			
+		/*Id 12*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (7 , 2);
+			
+		/*Id 13*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (7 , 4);
+			
+		/*Id 14*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (8 , 3);
+			
+		/*Id 15*/
+		INSERT INTO kategorierAllaSkor(sko_Id, kategori_Id)
+			VALUES (8 , 5);
+		
+
+			
+	/*Skapar tabellen orter*/
+	create table orter
+	(Id int not null auto_increment,
+	ortnamn varchar(50) not null,
+	antalKunder int, 
+	inhandlingsvärde double,
+	primary key(Id));
+
+		/*Fyller i startvärden för tabellen orter*/
+		/*Id 1*/
+		INSERT INTO orter(ortnamn)
+			VALUES ('Sollentuna');
+		
+		/*Id 2*/
+		INSERT INTO orter(ortnamn)
+			VALUES ('Vallenentuna');
+			
+		/*Id 3*/
+		INSERT INTO orter(ortnamn)
+			VALUES ('Umeå');
+			
+		/*Id 4*/
+		INSERT INTO orter(ortnamn)
+			VALUES ('Irak');
+			
+			
+			
+	/*Skapar tabellen kunder*/
+	create table kunder
+	(Id int not null auto_increment,
+	förnamn varchar(50) not null,
+	efternamn varchar(50) not null,
+	ort_Id int not null,
+	spenderadePengar double,
+	primary key(Id),
+	foreign key (ort_Id) references orter(Id));
+
+		/*Fyller i startvärden för tabellen kunder*/
+		/*Id 1*/
+		INSERT INTO kunder(förnamn, efternamn, ort_Id)
+			VALUES ('Anders' , 'Andersson' , 1);
+
+		/*Id 2*/
+		INSERT INTO kunder(förnamn, efternamn, ort_Id)
+			VALUES ('Bertil' , 'Bertilsson' , 2);
+			
+		/*Id 3*/
+		INSERT INTO kunder(förnamn, efternamn, ort_Id)
+			VALUES ('Charlie' , 'Charliesson' , 3);
+			
+		/*Id 4*/
+		INSERT INTO kunder(förnamn, efternamn, ort_Id)
+			VALUES ('David' , 'Davidsson' , 1);
+			
+		/*Id 5*/
+		INSERT INTO kunder(förnamn, efternamn, ort_Id)
+			VALUES ('Erik' , 'Eriksson' , 4);
+
+
+
+	/*Skapar tabellen kunderPerOrt*/
+	create table kunderPerOrt
+	(Id int not null auto_increment,
+	ort_Id int not null,
+	kund_Id int not null,
+	primary key (Id),
+	foreign key (ort_Id) references orter(Id),
+	foreign key (kund_Id) references kunder(Id));
+
+		/*Fyller i startvärden för tabellen beställningar*/
+		/*Id 1*/
+		INSERT INTO kunderPerOrt(ort_Id, kund_Id)
+			VALUES (1 , 1);
+			
+		/*Id 2*/
+		INSERT INTO kunderPerOrt(ort_Id, kund_Id)
+			VALUES (1 , 4);
+			
+		/*Id 3*/
+		INSERT INTO kunderPerOrt(ort_Id, kund_Id)
+			VALUES (2 , 2);
+			
+		/*Id 4*/
+		INSERT INTO kunderPerOrt(ort_Id, kund_Id)
+			VALUES (3 , 3);
+			
+		/*Id 5*/
+		INSERT INTO kunderPerOrt(ort_Id, kund_Id)
+			VALUES (4 , 5);
+			
+			
+
+	/*Skapar tabellen beställningar*/
+	create table beställningar
+	(Id int not null auto_increment,
+	kund_Id int not null,
+	månad int not null,
+	kostnad double,
+	primary key (Id),
+	foreign key (kund_Id) references kunder(Id));
+
+		/*Fyller i startvärden för tabellen beställningar*/
+		/*Id 1*/
+		INSERT INTO beställningar(kund_Id, månad)
+			VALUES (1 , 1);
+			
+		/*Id 2*/
+		INSERT INTO beställningar(kund_Id, månad)
+			VALUES (3 , 9);
+
+		/*Id 3*/
+		INSERT INTO beställningar(kund_Id, månad)
+			VALUES (4 , 4);
+			
+		/*Id 4*/
+		INSERT INTO beställningar(kund_Id, månad)
+			VALUES (2 , 11);
+			
+		/*Id 5*/
+		INSERT INTO beställningar(kund_Id, månad)
+			VALUES (5 , 4);
+			
+		/*Id 6*/
+		INSERT INTO beställningar(kund_Id, månad)
+			VALUES (3 , 3);
+
+
+
+	/*Skapar tabellen skoBeställningar*/
+	create table skoBeställningar
+	(Id int not null auto_increment,
+	beställning_Id int not null,
+	sko_Id int not null,
+	primary key (Id),
+	foreign key (beställning_Id) references beställningar(Id),
+	foreign key (sko_Id) references skor(Id));
+
+		/*Fyller i startvärden för tabellen skoBeställningar*/
+		/*Id 1*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (1 , 8);
+			
+		/*Id 2*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (2 , 2);
+					
+		/*Id 3*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (2 , 5);
+					
+		/*Id 4*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (2 , 6);
+					
+		/*Id 5*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (3 , 1);
+					
+		/*Id 6*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (3 , 1);
+					
+		/*Id 7*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (3 , 1);
+					
+		/*Id 8*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (4 , 2);
+					
+		/*Id 9*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (4 , 4);
+							
+		/*Id 10*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (4 , 4);
+							
+		/*Id 11*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (4 , 5);
+							
+		/*Id 12*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (4 , 1);
+							
+		/*Id 13*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (5 , 7);
+							
+		/*Id 14*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (6 , 2);
+							
+		/*Id 15*/
+		INSERT INTO skoBeställningar(beställning_Id, sko_Id)
+			VALUES (6 , 3);
+		
+/*Slut: skapar alla tabeller och deras grundvärden*/
+
+
+
+/*Start: fyller på sparade uträkningsvärden i tabellerna*/
+	/*Fyller i sparade uträkningsvärden för tabellen skor*/
+	/*Id 1*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 1)
+	where Id = 1;
+
+	/*Id 2*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 2)
+	where Id = 2;
+
+	/*Id 3*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 3)
+	where Id = 3;
+
+	/*Id 4*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 4)
+	where Id = 4;
+
+	/*Id 5*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 5)
+	where Id = 5;
+	
+	/*Id 6*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 6)
+	where Id = 6;
+	
+	/*Id 7*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 7)
+	where Id = 7;
+	
+	/*Id 8*/
+	update skor
+	set sålda = (select count(sko_Id) from skoBeställningar where sko_Id = 8)
+	where Id = 8;
+	
+	
+	
+	/*Fyller i sparade uträkningsvärden för tabellen kategorier*/
+	/*Id 1*/
+	update kategorier
+	set produkter = (select count(kategori_Id) from kategorierAllaSkor where kategori_Id = 1)
+	where Id = 1;
+
+	/*Id 2*/
+	update kategorier
+	set produkter = (select count(kategori_Id) from kategorierAllaSkor where kategori_Id = 2)
+	where Id = 2;
+
+	/*Id 3*/
+	update kategorier
+	set produkter = (select count(kategori_Id) from kategorierAllaSkor where kategori_Id = 3)
+	where Id = 3;
+
+	/*Id 4*/
+	update kategorier
+	set produkter = (select count(kategori_Id) from kategorierAllaSkor where kategori_Id = 4)
+	where Id = 4;
+
+	/*Id 5*/
+	update kategorier
+	set produkter = (select count(kategori_Id) from kategorierAllaSkor where kategori_Id = 5)
+	where Id = 5;
+	
+	
+	
+	/*Fyller i sparade uträkningsvärden för tabellen orter*/
+	/*Id 1*/
+	update orter
+	set antalKunder = (select count(ort_Id) from kunder where ort_Id = 1)
+	where Id = 1;
+	update orter
+	set inhandlingsvärde = (
+	select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+             inner join kunder
+			on beställningar.kund_Id = kunder.Id
+			where kunder.ort_Id = 1)
+	where Id = 1;
+
+	/*Id 2*/
+	update orter
+	set antalKunder = (select count(ort_Id) from kunder where ort_Id = 2)
+	where Id = 2;
+	update orter
+	set inhandlingsvärde = (
+	select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+             inner join kunder
+			on beställningar.kund_Id = kunder.Id
+			where kunder.ort_Id = 2)
+	where Id = 2;
+
+	/*Id 3*/
+	update orter
+	set antalKunder = (select count(ort_Id) from kunder where ort_Id = 3)
+	where Id = 3;
+	update orter
+	set inhandlingsvärde = (
+	select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+             inner join kunder
+			on beställningar.kund_Id = kunder.Id
+			where kunder.ort_Id = 3)
+	where Id = 3;
+
+	/*Id 4*/
+	update orter
+	set antalKunder = (select count(ort_Id) from kunder where ort_Id = 4)
+	where Id = 4;
+	update orter
+	set inhandlingsvärde = (
+	select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+             inner join kunder
+			on beställningar.kund_Id = kunder.Id
+			where kunder.ort_Id = 4)
+	where Id = 4;
+	
+	
+	
+	/*Fyller i sparade uträkningsvärden för tabellen beställningar*/
+	/*Id 1*/
+	update beställningar
+	set kostnad = (
+	(select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 1))
+	where Id = 1;
+	
+	/*Id 2*/
+	update beställningar
+	set kostnad = (
+	(select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 2))
+	where Id = 2;
+	
+	/*Id 3*/
+	update beställningar
+	set kostnad = (
+	(select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 3))
+	where Id = 3;
+	
+	/*Id 4*/
+	update beställningar
+	set kostnad = (
+	(select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 4))
+	where Id = 4;
+	
+	/*Id 5*/
+	update beställningar
+	set kostnad = (
+	(select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 5))
+	where Id = 5;
+	
+	/*Id 6*/
+	update beställningar
+	set kostnad = (
+	(select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 6))
+	where Id = 6;
+	
+	
+	
+	/*Fyller i sparade uträkningsvärden för tabellen kunder*/
+	/*Id 1*/
+	update kunder
+	set spenderadePengar = (
+		select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+			where beställningar.kund_Id = 1)
+	where Id = 1;
+	
+	/*Id 2*/
+	update kunder
+	set spenderadePengar = (
+		select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+			where beställningar.kund_Id = 2)
+	where Id = 2;
+	
+	/*Id 3*/
+	update kunder
+	set spenderadePengar = (
+		select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+			where beställningar.kund_Id = 3)
+	where Id = 3;
+	
+	/*Id 4*/
+	update kunder
+	set spenderadePengar = (
+		select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+			where beställningar.kund_Id = 4)
+	where Id = 4;
+	
+	/*Id 5*/
+	update kunder
+	set spenderadePengar = (
+		select sum(pris) from skor 
+			inner join beställningar inner join skoBeställningar
+			on skoBeställningar.beställning_Id = beställningar.Id
+			on skoBeställningar.sko_Id = skor.Id
+			where beställningar.kund_Id = 5)
+	where Id = 5;
+	
+/*Slut: fyller på sparade uträkningsvärden i tabellerna*/

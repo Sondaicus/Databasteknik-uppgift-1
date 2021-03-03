@@ -1,0 +1,38 @@
+/*Fråga 1*/
+select kategori, produkter from kategorier;
+
+
+
+/*Fråga 2*/
+select förnamn, efternamn, spenderadePengar from kunder;
+
+
+
+/*Fråga 3*/
+select förnamn, efternamn from kunder
+inner join skoBeställningar on skoBeställningar.sko_Id = 1
+inner join beställningar on beställningar.Id = skoBeställningar.beställning_Id
+where kunder.Id = beställningar.kund_Id
+group by kunder.Id;
+
+
+
+/*Fråga 4*/
+select ortnamn, inhandlingsvärde from orter
+where inhandlingsvärde > 1000;
+
+
+
+/*Fråga 5*/
+drop view if exists top5List;
+create view top5List as
+select * from skor
+order by sålda desc
+limit 5;
+select * from top5List;
+
+
+
+/*Fråga 6*/
+select månad from beställningar
+where kostnad = (select max(kostnad) from beställningar);

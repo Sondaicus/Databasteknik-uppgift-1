@@ -1,0 +1,180 @@
+/*Fråga 1*/
+drop temporary table if exists kategorierProdukterTT;
+create temporary table kategorierProdukterTT
+(Id int not null auto_increment,
+produkter int not null,
+primary key (Id));
+
+insert into kategorierProdukterTT (produkter)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 1));
+insert into kategorierProdukterTT (produkter)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 2));
+insert into kategorierProdukterTT (produkter)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 3));
+insert into kategorierProdukterTT (produkter)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 4));
+insert into kategorierProdukterTT (produkter)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 5));
+
+select kategorier.kategori, kategorierProdukterTT.produkter from kategorier
+inner join kategorierProdukterTT on kategorierProdukterTT.Id = kategorier.Id;
+
+
+
+/*Fråga 2*/
+drop temporary table if exists kunderSpenderadePengarTT;
+create temporary table kunderSpenderadePengarTT
+(Id int not null auto_increment,
+spenderadePengar double not null,
+primary key (Id));
+
+insert into kunderSpenderadePengarTT (spenderadePengar)
+values((select sum(pris) from skor
+	inner join beställningar inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id
+		on skoBeställningar.sko_Id = skor.Id
+where beställningar.kund_Id = 1));
+insert into kunderSpenderadePengarTT (spenderadePengar)
+values((select sum(pris) from skor
+	inner join beställningar inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id
+		on skoBeställningar.sko_Id = skor.Id
+where beställningar.kund_Id = 2));
+insert into kunderSpenderadePengarTT (spenderadePengar)
+values((select sum(pris) from skor
+	inner join beställningar inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id
+		on skoBeställningar.sko_Id = skor.Id
+where beställningar.kund_Id = 3));
+insert into kunderSpenderadePengarTT (spenderadePengar)
+values((select sum(pris) from skor
+	inner join beställningar inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id
+		on skoBeställningar.sko_Id = skor.Id
+where beställningar.kund_Id = 4));
+insert into kunderSpenderadePengarTT (spenderadePengar)
+values((select sum(pris) from skor
+	inner join beställningar inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id
+		on skoBeställningar.sko_Id = skor.Id
+where beställningar.kund_Id = 5));
+
+select kunder.förnamn, kunder.efternamn, kunderSpenderadePengarTT.spenderadePengar from kunder
+inner join kunderSpenderadePengarTT on kunderSpenderadePengarTT.Id = kunder.Id;
+
+
+
+/*Fråga 3*/
+select förnamn, efternamn from kunder
+inner join skoBeställningar on skoBeställningar.sko_Id = 1
+inner join beställningar on beställningar.Id = skoBeställningar.beställning_Id
+where kunder.Id = beställningar.kund_Id
+group by kunder.Id;
+
+
+
+/*Fråga 4*/
+drop temporary table if exists orterInhandlingsvärdeTT;
+create temporary table orterInhandlingsvärdeTT
+(Id int not null auto_increment,
+inhandlingsvärde double not null,
+primary key (Id));
+
+insert into orterInhandlingsvärdeTT (inhandlingsvärde)
+values((select sum(pris) from skor
+	inner join beställningar 
+    inner join kunder
+		on beställningar.kund_Id = kunder.Id
+        on kunder.ort_Id = 1
+	inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id and skoBeställningar.sko_Id = skor.Id
+));
+insert into orterInhandlingsvärdeTT (inhandlingsvärde)
+values((select sum(pris) from skor
+	inner join beställningar 
+    inner join kunder
+		on beställningar.kund_Id = kunder.Id
+        on kunder.ort_Id = 2
+	inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id and skoBeställningar.sko_Id = skor.Id
+));
+insert into orterInhandlingsvärdeTT (inhandlingsvärde)
+values((select sum(pris) from skor
+	inner join beställningar 
+    inner join kunder
+		on beställningar.kund_Id = kunder.Id
+        on kunder.ort_Id = 3
+	inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id and skoBeställningar.sko_Id = skor.Id
+));
+insert into orterInhandlingsvärdeTT (inhandlingsvärde)
+values((select sum(pris) from skor
+	inner join beställningar 
+    inner join kunder
+		on beställningar.kund_Id = kunder.Id
+        on kunder.ort_Id = 4
+	inner join skoBeställningar
+		on skoBeställningar.beställning_Id = beställningar.Id and skoBeställningar.sko_Id = skor.Id
+));
+        
+select orter.ortnamn, orterInhandlingsvärdeTT.inhandlingsvärde from orter
+	inner join orterInhandlingsvärdeTT
+		on orterInhandlingsvärdeTT.Id = orter.Id
+where inhandlingsvärde > 1000;
+
+
+
+/*Fråga 5*/
+drop temporary table if exists skorSåldaTT;
+create temporary table skorSåldaTT
+(Id int not null auto_increment,
+sålda int,
+primary key (Id));
+
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 1));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 2));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 3));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 4));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 5));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 6));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 7));
+insert into skorSåldaTT(sålda)
+values((select count(sko_Id) from skoBeställningar where sko_Id = 8));
+
+select skor.*, skorSåldaTT.sålda from skor, skorSåldaTT
+where skor.Id = skorSåldaTT.Id;
+
+
+
+/*Fråga 6*/
+drop temporary table if exists beställningMånadTT;
+create temporary table beställningMånadTT
+(Id int not null auto_increment,
+kostnad double,
+primary key (Id));
+
+insert into beställningMånadTT(kostnad)
+	values((select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 1));
+insert into beställningMånadTT(kostnad)
+	values((select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 2));
+insert into beställningMånadTT(kostnad)
+	values((select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 3));
+insert into beställningMånadTT(kostnad)
+	values((select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 4));   
+insert into beställningMånadTT(kostnad)
+	values((select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 5));   
+insert into beställningMånadTT(kostnad)
+	values((select sum(pris) from skor inner join skoBeställningar on skoBeställningar.sko_Id = skor.Id where skobeställningar.beställning_Id = 6)); 
+    
+select månad from beställningar
+	inner join beställningMånadTT
+		on beställningMånadTT.Id = beställningar.Id
+order by kostnad desc
+limit 1;
